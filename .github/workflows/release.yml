@@ -1,0 +1,25 @@
+name: Automatic Release Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: コードを取得
+        uses: actions/checkout@v4
+
+      - name: パッケージ（Zipファイル）の作成
+        run: zip -r release-app.zip hello.txt README.md
+
+      - name: GitHubへリリースを自動作成・公開
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v1.0.0
+          name: "Release v1.0.0 (自動リリース)"
+          body: "CI/CDパイプラインによって自動生成されたリリース用パッケージです。"
+          files: release-app.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
