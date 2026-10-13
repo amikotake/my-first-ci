@@ -20,16 +20,16 @@ jobs:
         dotnet-version: '8.0.x'
         
     - name: Restore dependencies
-      run: dotnet restore ConsoleApp1/ConsoleApp1.csproj
+      run: dotnet restore DotNetTest.csproj
       
     - name: Build
-      run: dotnet build ConsoleApp1/ConsoleApp1.csproj --no-restore
+      run: dotnet build DotNetTest.csproj --no-restore
       
     - name: Test
-      run: dotnet test ConsoleApp1/ConsoleApp1.csproj --no-build --verbosity normal
+      run: dotnet test DotNetTest.csproj --no-build --verbosity normal
 
     - name: Publish
-      run: dotnet publish ConsoleApp1/ConsoleApp1.csproj --configuration Release --output ./publish-folder
+      run: dotnet publish DotNetTest.csproj --configuration Release --output ./publish-folder
       
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
