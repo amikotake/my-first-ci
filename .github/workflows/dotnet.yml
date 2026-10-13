@@ -1,0 +1,38 @@
+name: .NET
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+        
+    - name: Restore dependencies
+      run: dotnet restore ConsoleApp1/ConsoleApp1.csproj
+      
+    - name: Build
+      run: dotnet build ConsoleApp1/ConsoleApp1.csproj --no-restore
+      
+    - name: Test
+      run: dotnet test ConsoleApp1/ConsoleApp1.csproj --no-build --verbosity normal
+
+    - name: Publish
+      run: dotnet publish ConsoleApp1/ConsoleApp1.csproj --configuration Release --output ./publish-folder
+      
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: my-app-artifact
+        path: ./publish-folder
